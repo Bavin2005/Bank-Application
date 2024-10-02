@@ -47,7 +47,7 @@ logoutButton.addEventListener('click', () => {
     localStorage.removeItem('loggedIn');
     signOut(auth)
         .then(() => {
-            window.location.href = 'signin.html';
+            window.location.href = 'index.html';
         })
         .catch((error) => {
             console.error('Error signing out:', error);

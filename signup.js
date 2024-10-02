@@ -51,7 +51,7 @@ signup.addEventListener('click', (event) => {
       const docRef = doc(db, "users", user.uid);
       setDoc(docRef, data)
         .then(() => {
-          window.location.href = 'signin.html';
+          window.location.href = 'index.html';
         })
         .catch((error) => {
           console.error("Error saving user data to Firestore:", error);
