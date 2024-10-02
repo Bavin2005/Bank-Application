@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script type="module" src="details.js"></script>
+        <style>
+        *{
+            font-family: "Archivo Black", sans-serif;
+        }
+
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:linear-gradient(to right, #e2e2e2, #c9d6ff);
+        }
+
+        .archivo-black-regular {
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+        
+        button{
+            color:blueviolet;
+            background-color:#c9d6ff;
+            padding:5px;
+            border-radius:5px;
+            font-size:1rem;
+            font-weight:bold;
+            border:none;
+        }
+
+        button:hover{
+            color:blue;
+        }
+        button, div{
+            font-size:20px;
+            padding:10px;
+        }
+
+        #nname{
+            background-color: gainsboro;
+            margin-bottom: 20px;
+            height: 30px;
+            width: 20rem;
+            border: none;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        #nemail{
+            background-color: gainsboro;
+            margin-bottom: 20px;
+            height: 30px;
+            width: 20rem;
+            border: none;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        #amount{
+            background-color: gainsboro;
+            margin-bottom: 20px;
+            height: 30px;
+            width: 20rem;
+            border: none;
+            border-radius: 3px;
+            outline: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        <div id="name">Name</div>
+        <div id="email">Email</div>
+        <button  id="logout">Log Out</button>
+        <h1>Balance Amount</h1>
+        <h2 id="balance"></h2>
+        <div id="amt">
+            <input type="text" id="nname" placeholder="Receiver Name"><br>
+            <input type="text" id="nemail" placeholder="Receiver Email"><br>
+            <input type="text" id="amount" placeholder="Amount"><br>
+            <button id="submit">Pay Now</button>
+        </div>
+        <div id="message"></div>
+    </div>
+</body>
+</html>

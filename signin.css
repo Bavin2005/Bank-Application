@@ -1,0 +1,97 @@
+* {
+  font-family: "Archivo Black", sans-serif;
+}
+
+html,
+body {
+  font-size: 62.5%;
+  margin: 0%;
+  padding: 0%;
+  border: 0%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[class*="col-"] {
+  width: 100%;
+}
+
+.archivo-black-regular {
+  font-family: "Archivo Black", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#container {
+  width: 50rem;
+  border: 1px;
+  border-radius: 10px;
+  height: 40rem;
+  background-image: url("https://img.freepik.com/free-vector/technology-background-design_23-2148451528.jpg?t=st=1727698371~exp=1727701971~hmac=ecfdc65cc7b7706b139d7aede1425f335c1d5c45887626b0d0e6d649c097d768&w=1060");
+}
+
+#form {
+  position: relative;
+  top: 3rem;
+  left: 14rem;
+  font-size: large;
+}
+
+.login {
+  position: relative;
+  left: 50px;
+  color: white;
+}
+
+#email {
+  background-color: gainsboro;
+  margin-bottom: 20px;
+  height: 30px;
+  width: 20rem;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+}
+
+#pass {
+  background-color: gainsboro;
+  height: 30px;
+  width: 20rem;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+}
+
+#btn {
+  margin-top: 30px;
+  width: 20rem;
+  height: 30px;
+  background-color: skyblue;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tag {
+  position: relative;
+  left: 80px;
+  color: white;
+}
+
+#signup {
+  width: 10rem;
+  height: 30px;
+  background-color: skyblue;
+  border: none;
+  border-radius: 4px;
+  margin-left: 40px;
+  cursor: pointer;
+}
+
+.messagediv {
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Application</title>
+    <link rel="stylesheet" href="signin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script type="module" src="signin.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="signinmessage" class="messagediv" style="display: none;"></div>
+        <div id="form">
+                <h1 class="login">Login</h1>
+                <input type="email" id="email" placeholder="Email"><br>
+                <input type="text" id="pass" placeholder="Password"><br>
+                <button id="btn">Log in</button>
+                <p class="tag">Or</p>
+                <button id="signup" onclick="window.location.href = 'signup.html'">Sign Up</button>
+        </div>
+    </div>  
+</body>
+</html>
