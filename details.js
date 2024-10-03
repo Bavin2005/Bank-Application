@@ -65,6 +65,10 @@ async function transferFunds(senderId, receiverId, transferAmount) {
                 throw new Error("Sender does not exist!");
             }
 
+            if(senderId == receiverId){
+                throw new Error("Invalid User")
+            }
+
             const senderData = senderDoc.data();
             const senderBalance = senderData.min;
 
@@ -86,6 +90,7 @@ async function transferFunds(senderId, receiverId, transferAmount) {
 
         console.log("Transfer successful !!!");
         document.getElementById('message').innerText = "Transfer successful !!!";
+        window.location.reload()
     } catch (error) {
         console.error("Transfer failed:", error.message);
         document.getElementById('message').innerText = `Transfer failed: ${error.message}`;
