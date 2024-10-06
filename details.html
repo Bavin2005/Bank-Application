@@ -44,16 +44,6 @@
             padding:10px;
         }
 
-        #nname{
-            background-color: gainsboro;
-            margin-bottom: 20px;
-            height: 30px;
-            width: 20rem;
-            border: none;
-            border-radius: 3px;
-            outline: none;
-        }
-
         #nemail{
             background-color: gainsboro;
             margin-bottom: 20px;
@@ -64,7 +54,7 @@
             outline: none;
         }
 
-        #amount{
+        #amount,#own,#with{
             background-color: gainsboro;
             margin-bottom: 20px;
             height: 30px;
@@ -78,16 +68,25 @@
 </head>
 <body>
     <div>
-        <div id="name">Name</div>
-        <div id="email">Email</div>
+        <div id="name"></div>
+        <div id="email"></div>
         <button  id="logout">Log Out</button>
         <h1>Balance Amount</h1>
         <h2 id="balance"></h2>
         <div id="amt">
-            <input type="text" id="nname" placeholder="Receiver Name"><br>
             <input type="text" id="nemail" placeholder="Receiver Email"><br>
             <input type="text" id="amount" placeholder="Amount"><br>
             <button id="submit">Pay Now</button>
+        </div>
+        <div>
+            <h1>Deposit</h1>
+            <input type="text" id="own" placeholder="Deposit Amount"><br>
+            <button id="dep">Deposit</button>
+        </div>
+        <div>
+            <h1>Withdraw</h1>
+            <input type="text" id="with" placeholder="Withdrawl Amount"><br>
+            <button id="withdraw">Withdraw</button>
         </div>
         <div id="message"></div>
     </div>

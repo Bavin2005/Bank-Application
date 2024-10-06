@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { getFirestore, setDoc, doc, Timestamp} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD4iapPT4rXMP_CmPe-yIfQm9PVgUcgqkw",
@@ -32,6 +32,7 @@ signup.addEventListener('click', (event) => {
   const pass = document.getElementById("rpass").value;
   const name = document.getElementById("rname").value;
   const min = 1000
+  let lastChargeTime
 
   const auth = getAuth();
   const db = getFirestore();
@@ -43,7 +44,8 @@ signup.addEventListener('click', (event) => {
         name: name,
         email: email,
         password : pass,
-        min : 1000
+        min : 1000,
+        lastPaymentTime: 0
       };
 
       showMessage("Account Created Successfully", "signupmessage");

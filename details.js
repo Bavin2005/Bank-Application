@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { getFirestore, getDoc, doc, runTransaction, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getFirestore, getDoc, doc, runTransaction, collection, query, where, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD4iapPT4rXMP_CmPe-yIfQm9PVgUcgqkw",
@@ -31,7 +31,7 @@ onAuthStateChanged(auth, (user) => {
                     const userData = docSnap.data();
                     displayUserData(userData);
                 } else {
-                    console.log("No document found matching id");
+                    console.log("No document found matching ID");
                 }
             })
             .catch((error) => {
@@ -57,7 +57,7 @@ logoutButton.addEventListener('click', () => {
 async function transferFunds(senderId, receiverId, transferAmount) {
     const senderRef = doc(db, "users", senderId);
     const receiverRef = doc(db, "users", receiverId);
-    
+
     try {
         await runTransaction(db, async (transaction) => {
             const senderDoc = await transaction.get(senderRef);
@@ -65,8 +65,8 @@ async function transferFunds(senderId, receiverId, transferAmount) {
                 throw new Error("Sender does not exist!");
             }
 
-            if(senderId == receiverId){
-                throw new Error("Invalid User")
+            if (senderId === receiverId) {
+                throw new Error("Invalid transfer, cannot send to the same account");
             }
 
             const senderData = senderDoc.data();
@@ -86,11 +86,12 @@ async function transferFunds(senderId, receiverId, transferAmount) {
 
             transaction.update(senderRef, { min: senderBalance - transferAmount });
             transaction.update(receiverRef, { min: receiverBalance + transferAmount });
+            transaction.update(senderRef, { lastPaymentTime: Timestamp.now() });
         });
 
-        console.log("Transfer successful !!!");
-        document.getElementById('message').innerText = "Transfer successful !!!";
-        window.location.reload()
+        console.log("Transfer successful!");
+        document.getElementById('message').innerText = "Transfer successful!";
+        window.location.reload();
     } catch (error) {
         console.error("Transfer failed:", error.message);
         document.getElementById('message').innerText = `Transfer failed: ${error.message}`;
@@ -101,13 +102,13 @@ async function getReceiverUidByEmail(email) {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
     const querySnapshot = await getDocs(q);
-    
+
     if (querySnapshot.empty) {
         throw new Error("No user found with this email.");
     }
 
     const userDoc = querySnapshot.docs[0];
-    return userDoc.id;  
+    return userDoc.id;
 }
 
 const transferButton = document.getElementById('submit');
@@ -115,9 +116,8 @@ transferButton.addEventListener('click', async () => {
     const senderId = localStorage.getItem('loggedIn');
     const transferAmount = parseFloat(document.getElementById('amount').value);
     const receiverEmail = document.getElementById('nemail').value;
-    const receiverName = document.getElementById('nname').value
 
-    if (receiverName && receiverEmail && transferAmount > 0) {
+    if (receiverEmail && transferAmount > 0) {
         try {
             const receiverId = await getReceiverUidByEmail(receiverEmail);
             transferFunds(senderId, receiverId, transferAmount);
@@ -125,6 +125,82 @@ transferButton.addEventListener('click', async () => {
             document.getElementById('message').innerText = error.message;
         }
     } else {
-        document.getElementById('message').innerText = "Invalid Name or receiver email or transfer amount.";
+        document.getElementById('message').innerText = "Invalid receiver email or transfer amount.";
+    }
+});
+
+const senderId = localStorage.getItem('loggedIn');
+const senderRef = doc(db, "users", senderId);
+
+if (senderId) {
+    setInterval(async () => {
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const senderDoc = await transaction.get(senderRef);
+                    const senderData = senderDoc.data();
+                    let senderBalance = senderData.min;
+                    const lastPaymentTime = senderData.lastPaymentTime;
+                    const currentTime = Timestamp.now();
+                    const timeDifference = Math.floor((currentTime.seconds - lastPaymentTime.seconds)/60); 
+                    const charges = 1; 
+        
+                    if (senderBalance < 500 && timeDifference > 0) {
+                        const totalCharges = timeDifference * charges;
+                        senderBalance --
+                        transaction.update(senderRef, {
+                            min: senderBalance,
+                            lastPaymentTime: currentTime
+                        });
+        
+                        document.getElementById("balance").innerText = senderBalance;
+                        console.log(`Charges applied: ${totalCharges} units for ${timeDifference} seconds`);
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to apply time charges:", error);
+                document.getElementById('message').innerText = "Failed to apply time charges";
+            }
+    }, 6000); 
+}
+
+const depositButton = document.getElementById("dep");
+depositButton.addEventListener('click', async () => {
+    const senderId = localStorage.getItem('loggedIn');
+    const senderRef = doc(db, "users", senderId);
+    try {
+        await runTransaction(db, async (transaction) => {
+            const senderDoc = await transaction.get(senderRef);
+            const senderData = senderDoc.data();
+            const senderBalance = senderData.min;
+            const deposit = parseFloat(document.getElementById("own").value);
+            transaction.update(senderRef, { min: senderBalance + deposit });
+        });
+
+        document.getElementById('message').innerText = "Deposit successful!";
+        window.location.reload();
+    } catch (error) {
+        console.error("Deposit failed:", error.message);
+        document.getElementById('message').innerText = "Deposit failed";
+    }
+});
+
+const withdrawButton = document.getElementById("withdraw");
+withdrawButton.addEventListener('click', async () => {
+    const senderId = localStorage.getItem('loggedIn');
+    const senderRef = doc(db, "users", senderId);
+    try {
+        await runTransaction(db, async (transaction) => {
+            const senderDoc = await transaction.get(senderRef);
+            const senderData = senderDoc.data();
+            const senderBalance = senderData.min;
+            const deposit = parseFloat(document.getElementById("with").value);
+            transaction.update(senderRef, { min: senderBalance - deposit });
+        });
+
+        document.getElementById('message').innerText = "Withdraw successful!";
+        window.location.reload();
+    } catch (error) {
+        console.error("Withdraw failed:", error.message);
+        document.getElementById('message').innerText = "Withdraw failed";
     }
 });
