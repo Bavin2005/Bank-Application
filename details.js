@@ -146,7 +146,7 @@ if (senderId) {
         
                     if (senderBalance < 500 && timeDifference > 0) {
                         const totalCharges = timeDifference * charges;
-                        senderBalance --
+                        senderBalance -= totalCharges
                         transaction.update(senderRef, {
                             min: senderBalance,
                             lastPaymentTime: currentTime
